@@ -25,6 +25,7 @@ compile(Config, AppFile) ->
 	export_env("ICU_CFLAGS", "icu-config --cflags"),
 	export_env("ICU_CXXFLAGS", "icu-config --cxxflags"),
 	export_env("ICU_LDFLAGS", "icu-config --ldflags"),
+	export_env("ICU_INC_PATH", "icu-config --cppflags-searchpath"),
 	case os:getenv("I18N_BUILD_ID") of
 	false ->
 		{Mega, Secs, _} = os:timestamp(),
