@@ -26,6 +26,7 @@ compile(Config, AppFile) ->
 %%
 
 set_vars() ->
+
     case os:getenv("I18N_REBAR") of
     false ->
         ?DEBUG("Set env vars i18n\n", []),
@@ -47,8 +48,20 @@ set_vars() ->
             Timestamp = Mega*1000000 + Secs,
             os:putenv("I18N_BUILD_ID", [$.|integer_to_list(Timestamp)]);
         _ -> ok
-        end;
+        end,
 
+
+        case os:getenv("I18N_REBAR_COVER") of
+        "true" ->
+            ?DEBUG("Enable coverage for i18n\n", []),
+            append_env(" --coverage ", "ICU_CXXFLAGS", ""),
+            append_env(" --coverage ", "ICU_CFLAGS", ""),
+            append_env(" -lgcov ", "ICU_LDFLAGS", "");
+        _ ->
+            ?DEBUG("Disable coverage for i18n\n", []),
+            ok
+        end;
+    
     _ -> 
         ?DEBUG("Env vars for i18n already seted.\n", [])
     end,
@@ -68,5 +81,12 @@ export_env(Name, Cmd, FormatFn) ->
 		os:putenv(Name, FormatFn(Value)),
 		ok;
 	_ -> ok
+	end.
+
+append_env(Prefix, Name, Suffix) ->
+	case os:getenv(Name) of
+	Value when (Value =/= false) -> 
+		os:putenv(Name, Prefix ++ Value ++ Suffix),
+        true
 	end.
 
