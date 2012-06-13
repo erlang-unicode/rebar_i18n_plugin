@@ -1,4 +1,6 @@
-It works only in two cases:
 
-- `on_load` directive is working;
-- or `i18n` has dependences which are compiled before it.
+Tested with:
+
+```
+rebar 2.0.0 R15B 20120613_071358 git 2.0.0-28-gc1a891c
+```
